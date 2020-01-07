@@ -1,7 +1,10 @@
 package com.ranrings.libs.androidapptorest
 
-abstract class RequestHandler<RequestBodyType,ResponseBodyType>(val classOfReq : Class<RequestBodyType>,
-                                                                val classOfResp : Class<ResponseBodyType>? = null
+import kotlin.reflect.KClass
+
+abstract class RequestHandler<RequestBodyType,ResponseBodyType>(
+    val classOfReq: KClass<*>,
+    val classOfResp:KClass<*>? = null
                                                                 ) {
     abstract fun getMethodName() : String
     abstract fun onRequest(requestBody : RequestBodyType ) : ResponseBodyType

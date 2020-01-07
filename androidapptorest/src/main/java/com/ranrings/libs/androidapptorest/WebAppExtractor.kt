@@ -28,7 +28,6 @@ class WebAppExtractor{
         folderInInternalStorage = context.filesDir.path+"/${WEB_APP_FOLDER_NAME}"
         val file = File(folderInInternalStorage)
         file.mkdirs()
-
     }
 
 

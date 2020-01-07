@@ -24,7 +24,11 @@ public class ExampleInstrumentedTest {
 
     @Test
     public void testAdbCommands(){
-
+        try {
+          Process process =   Runtime.getRuntime().exec("port foward tcp:8080 tcp:8080");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
 }

@@ -1,6 +1,6 @@
 package com.ranrings.libs.androidapptorest
 
-class GetMethodInfoRequestHandler(var requestCaller: RequestCaller) : GetRequestHandler()  {
+internal class GetMethodInfoRequestHandler(var requestCaller: RequestCaller) : GetRequestHandler()  {
     override fun onGetRequest(uri: String): Any {
 
         if(uri.split("/").size >= 3){
@@ -8,11 +8,19 @@ class GetMethodInfoRequestHandler(var requestCaller: RequestCaller) : GetRequest
             requestCaller.requestHandlers.find {
                 it.getMethodName().equals(methodName,ignoreCase = true)
             }?.let {
-                val map = HashMap<String,String>()
-                it.classOfReq.declaredFields.forEach {
-                    map.put(it.name,it.type.simpleName)
+                if(requestCaller.isInternalRequest(it.getMethodName())){
+                    return "[Internal request. No information available.]"
                 }
-                return map
+                else if(it.isGetRequestHandler()){
+                    return "[${it.getDescription()}]"
+                }
+                else {
+                    val map = HashMap<String,String>()
+                    it.classOfReq.java.declaredFields.forEach {
+                        map.put(it.name,it.type.simpleName)
+                    }
+                    return map
+                }
             }
         }
 

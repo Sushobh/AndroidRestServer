@@ -59,14 +59,16 @@ class AndroidRestServer {
             return this
         }
 
+        internal fun buildForTest() : AndroidRestServer{
+            return androidRestServer
+        }
+
         fun build() : AndroidRestServer {
              androidRestServer.application?.let {
                  WebAppExtractor(it).extract()
                  return androidRestServer;
              }
-
-            throw Exception("Please set application in the builder")
-
+             throw Exception("Please set application in the builder")
         }
 
     }

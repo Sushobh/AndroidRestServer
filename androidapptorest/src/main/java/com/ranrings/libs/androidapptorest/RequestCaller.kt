@@ -12,15 +12,22 @@ import kotlin.collections.HashMap
 import kotlin.reflect.KClass
 
 
-open class RequestCaller(application: Application) {
+internal open class RequestCaller(application: Application) {
     val requestHandlers  = arrayListOf<RequestHandler<*,*>>()
-    val reservedMethodNames = arrayOf("methods","methodInfo")
+    val reservedMethodNames = arrayListOf<String>()
+    val internalrequestNames = arrayListOf<String>()
 
     init {
         addRequestHandler(WebAppRequestHandler(application))
         addRequestHandler(PublicFileRequestHandler(application))
         addRequestHandler(GetMethodsHandler(this))
         addRequestHandler(GetMethodInfoRequestHandler(this))
+        reservedMethodNames.add("webapp")
+        reservedMethodNames.add("public")
+        reservedMethodNames.add("getmethods")
+        reservedMethodNames.add("getmethodinfo")
+        internalrequestNames.add("webapp")
+        internalrequestNames.add("public")
     }
 
     fun onRequestReceived(session : NanoHTTPD.IHTTPSession): NanoHTTPD.Response {
@@ -128,7 +135,7 @@ open class RequestCaller(application: Application) {
             requestHandlers.add(requestHandler)
         }
         else {
-            if(!isValidRequestClass(requestClass = requestHandler.classOfReq::class)){
+            if(!isValidRequestClass(requestClass = requestHandler.classOfReq)){
                 throw Exception("Invalid Request Class")
             }
             else {
@@ -156,6 +163,12 @@ open class RequestCaller(application: Application) {
         return true
     }
 
+    fun isInternalRequest(requestName : String) : Boolean{
+       return internalrequestNames.find {
+            it.equals(requestName)
+        } != null
+    }
+
     private  fun isAllAlpha(str : String) : Boolean{
         return str.matches(Regex("[a-zA-Z]+"));
     }
@@ -167,8 +180,8 @@ open class RequestCaller(application: Application) {
         return toReturn
     }
 
-    fun <T> parsePostBodyFromJSONString(postBodyString : String,classType : Class<T>) : T  {
-        return Gson().fromJson(postBodyString,classType)
+    fun <T : Any> parsePostBodyFromJSONString(postBodyString : String,classType : KClass<T>) : T  {
+        return Gson().fromJson(postBodyString,classType.java)
     }
 
     data class ErrorResponse(var messge : String){

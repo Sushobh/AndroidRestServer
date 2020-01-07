@@ -1,6 +1,6 @@
 package com.ranrings.libs.androidapptorest
 
-abstract class GetRequestHandler : RequestHandler<String,Any>(String::class.java) {
+abstract class GetRequestHandler : RequestHandler<String,Any>(String::class) {
 
     override fun isGetRequestHandler(): Boolean {
         return true

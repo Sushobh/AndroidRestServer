@@ -2,7 +2,6 @@ package com.ranrings.libs.androidapptorest
 
 import android.app.Activity
 import android.app.Application
-import android.content.Context
 import org.json.JSONObject
 import org.junit.jupiter.api.Assertions.*
 import org.junit.jupiter.api.Test
@@ -10,6 +9,7 @@ import org.mockito.Mockito
 import org.mockito.Mockito.mock
 import org.skyscreamer.jsonassert.JSONAssert
 import java.lang.Exception
+import kotlin.reflect.KClass
 
 
 class RequestCallerTest {
@@ -36,7 +36,7 @@ class RequestCallerTest {
     @Test
     fun parsePostBodyFromJSONString() {
         val someString = getPersonJSONString()
-        val person : Person = requestCaller.parsePostBodyFromJSONString(someString,Person::class.java)
+        val person : Person = requestCaller.parsePostBodyFromJSONString(someString,Person::class)
         assertNotNull(someString)
         assertEquals(person.age,120)
         assertEquals(person.name,"SushobhNadiger")
@@ -56,12 +56,12 @@ class RequestCallerTest {
     @Test
     fun addRequestHandler() {
         var handler1 = Mockito.spy(TestMethodHandler<String, String>("method1/",
-            "Hello1",String::class.java,String::class.java))
+            "Hello1",String::class.java.kotlin,String::class))
         assertThrows(Exception::class.java,{
            requestCaller.addRequestHandler(handler1)
        })
         handler1 = Mockito.spy(TestMethodHandler<String, String>("method1",
-            "Hello1",String::class.java,String::class.java))
+            "Hello1",String::class.java.kotlin,String::class))
         assertThrows(RequestCaller.WrongRequestHandlerException::class.java,{
             requestCaller.addRequestHandler(handler1)
         })
@@ -85,8 +85,8 @@ class RequestCallerTest {
         })
     }
 
-    open class TestMethodHandler<RQ, RB>(var nameOfMethod: String,
-                                         var body: RB,val classReq : Class<RQ>, val classRes : Class<RB>) :
+    open class TestMethodHandler<RQ : Any, RB : Any>(var nameOfMethod: String,
+                                                     var body: RB, val classReq : KClass<RQ>, val classRes : KClass<RB>) :
         RequestHandler<RQ, RB>(classReq,classRes) {
         override fun getMethodName(): String {
             return nameOfMethod

@@ -1,13 +1,10 @@
 package com.ranrings.libs.androidapptorest
 
 import android.app.Application
-import com.google.gson.Gson
-import com.ranrings.libs.androidapptorest.RequestCallerTest.Companion.getPersonJSONString
 import org.junit.jupiter.api.Assertions.assertNotNull
 import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.Test
 import org.mockito.Mockito.mock
-import java.lang.Exception
 
 class ApiTests {
 
@@ -18,7 +15,7 @@ class ApiTests {
         var androidRestServer = AndroidRestServer.Builder()
             .setApplication(mock(Application::class.java))
             .addRequestHandler(object : RequestHandler<RequestCallerTest.Person, RequestCallerTest.Person>
-                (RequestCallerTest.Person::class.java,RequestCallerTest.Person::class.java)
+                (RequestCallerTest.Person::class,RequestCallerTest.Person::class)
             {
                 override fun getMethodName(): String {
                     return "method"
@@ -28,7 +25,7 @@ class ApiTests {
                     return  RequestCallerTest.Person("Sushobh Nadiger",120,false)
                 }
 
-            }).setPort(port).build()
+            }).setPort(port).buildForTest()
         androidRestServer.start()
         var service = ApiRequests.getVeryOwnRetrofit(port)
             .create(ApiRequests.POSTService::class.java)
