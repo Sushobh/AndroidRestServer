@@ -7,41 +7,40 @@ import fi.iki.elonen.NanoHTTPD.newChunkedResponse
 import fi.iki.elonen.NanoHTTPD.newFixedLengthResponse
 import java.io.InputStream
 import java.lang.Exception
+import java.util.*
+import kotlin.collections.HashMap
 import kotlin.reflect.KClass
 
 
-open class RequestCaller {
+open class RequestCaller(application: Application) {
     val requestHandlers  = arrayListOf<RequestHandler<*,*>>()
     val reservedMethodNames = arrayOf("methods","methodInfo")
 
-    private var application : Application
-
-    constructor(application: Application) {
-         this.application = application
-         addRequestHandler(WebAppRequestHandler(application))
-         addRequestHandler(PublicFileRequestHandler(application))
-         addRequestHandler(GetMethodsHandler(this))
+    init {
+        addRequestHandler(WebAppRequestHandler(application))
+        addRequestHandler(PublicFileRequestHandler(application))
+        addRequestHandler(GetMethodsHandler(this))
     }
 
     fun onRequestReceived(session : NanoHTTPD.IHTTPSession): NanoHTTPD.Response {
 
-        val inputStreamHandler : InputStreamRequestHandler<Any>? = requestHandlers.find {
+        val getInputStreamHandler : GetInputStreamRequestHandler? = requestHandlers.find {
             session.uri.substring(1,session.uri.length).startsWith(it.getMethodName())
-                    && it is InputStreamRequestHandler
-        } as InputStreamRequestHandler<Any>?
-        if(inputStreamHandler != null){
-            return handleInputStreamRequest(inputStreamHandler,requestUri = session.uri)
+                    && it is GetInputStreamRequestHandler
+        } as GetInputStreamRequestHandler
+        if(getInputStreamHandler != null){
+            return handleInputStreamRequest(getInputStreamHandler,requestUri = session.uri)
         }
         else {
-            val requestHandler : RequestHandler<Any,Any>? = requestHandlers.find {
+            val requestHandler : RequestHandler<*,*>? = requestHandlers.find {
                 it.getMethodName().equals(parseUriToGetMethodName(session.uri))
-            } as RequestHandler<Any, Any>?
+            }
             requestHandler?.let {
                 if(it.isGetRequestHandler() && (it is GetRequestHandler)){
                    return handleGetRequest(requestHandler,session)
                 }
                 else {
-                    return handlePostRequest(requestHandler,session)
+                    return handlePostRequest(requestHandler as RequestHandler<Any, Any>,session)
                 }
 
             }
@@ -76,17 +75,14 @@ open class RequestCaller {
 
     }
 
-    private fun checkForNonInputStreamRequest() {
 
-    }
 
     private fun handleInputStreamRequest(
-        requestHandler: InputStreamRequestHandler<Any>,
-        requestUri: String = "",
-        requestObject : Any  = Any()
+        requestHandlerGet: GetInputStreamRequestHandler,
+        requestUri: String = ""
       ): NanoHTTPD.Response {
-        val response : InputStream = requestHandler.onRequestWithUri(requestObject,requestUri)
-        return newChunkedResponse(NanoHTTPD.Response.Status.OK, requestHandler.getMimeType(requestUri),
+        val response : InputStream = requestHandlerGet.onGetRequest(requestUri) as InputStream
+        return newChunkedResponse(NanoHTTPD.Response.Status.OK, requestHandlerGet.getMimeType(requestUri),
             response
         );
     }
@@ -103,7 +99,7 @@ open class RequestCaller {
             }
             return uri.substring(1,uri.length)
         }
-        return null
+
     }
 
 
@@ -119,11 +115,25 @@ open class RequestCaller {
             throw WrongRequestHandlerException("Method names can contain only letters.")
         }
         else if(reservedMethodNames.find
-            { requestHandler.getMethodName().toLowerCase().equals(it.toLowerCase())} != null) {
+            { requestHandler.getMethodName().toLowerCase(Locale.ENGLISH).equals(it.toLowerCase(
+                Locale.ENGLISH))} != null) {
             throw WrongRequestHandlerException("${requestHandler.getMethodName()}  is a reserved method name. " +
                     "Cannot use it")
         }
-        requestHandlers.add(requestHandler)
+
+        if(requestHandler.isGetRequestHandler()){
+            requestHandlers.add(requestHandler)
+        }
+        else {
+            if(!isValidRequestClass(requestClass = requestHandler.classOfReq::class)){
+                throw Exception("Invalid Request Class")
+            }
+            else {
+                requestHandlers.add(requestHandler)
+            }
+        }
+
+
     }
 
     fun isValidRequestClass(requestClass: KClass<*>) : Boolean{
@@ -148,7 +158,7 @@ open class RequestCaller {
     }
 
     fun getPostBodyStringFromSession(session: NanoHTTPD.IHTTPSession) : String?{
-        var map = HashMap<String,String>()
+        val map = HashMap<String,String>()
         session.parseBody(map)
         val toReturn =  map["postData"]
         return toReturn

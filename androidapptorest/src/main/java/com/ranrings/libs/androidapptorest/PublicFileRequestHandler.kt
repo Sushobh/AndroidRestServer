@@ -7,11 +7,11 @@ import java.io.FileInputStream
 import java.io.InputStream
 
 
-class PublicFileRequestHandler : InputStreamRequestHandler<String> {
+class PublicFileRequestHandler : GetInputStreamRequestHandler {
 
     var context : Context
 
-    constructor( context: Context) : super(String::class.java) {
+    constructor( context: Context) : super() {
         this.context = context
     }
 
@@ -23,21 +23,18 @@ class PublicFileRequestHandler : InputStreamRequestHandler<String> {
 
     }
 
-    override fun onRequestWithUri(requestBody: Any, uri: String): InputStream {
-
-        val file = File(getFilePath(uri))
-        return BufferedInputStream(FileInputStream(file))
-    }
 
     override fun getMethodName(): String {
        return "public"
     }
 
-    override fun onRequest(requestBody: String): InputStream {
-       return super.onRequest(requestBody)
+
+    override fun onGetRequest(uri: String): Any {
+        val file = File(getFilePath(uri))
+        return BufferedInputStream(FileInputStream(file))
     }
 
-     fun getFilePath(uri : String) : String {
+    fun getFilePath(uri : String) : String {
        return getWebFolderPath(context)+"/${uri.split("/")[2]}"
     }
 }

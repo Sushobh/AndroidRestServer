@@ -7,11 +7,11 @@ import java.io.File
 import java.io.FileInputStream
 
 
-class WebAppRequestHandler : InputStreamRequestHandler<String> {
+class WebAppRequestHandler : GetInputStreamRequestHandler {
 
     var context : Context
 
-    constructor( context: Context) : super(String::class.java) {
+    constructor( context: Context) : super() {
         this.context = context
     }
 
@@ -27,13 +27,9 @@ class WebAppRequestHandler : InputStreamRequestHandler<String> {
 
 
 
-    override fun onRequestWithUri(requestBody: Any, uri : String): InputStream {
+    override fun onGetRequest(uri: String): Any {
         val indexHtmlFile = File(getWebFolderPath(context)+"/index.html")
         return BufferedInputStream(FileInputStream(indexHtmlFile))
-    }
-
-    override fun onRequest(requestBody: String): InputStream {
-        return super.onRequest(requestBody)
     }
 
 
