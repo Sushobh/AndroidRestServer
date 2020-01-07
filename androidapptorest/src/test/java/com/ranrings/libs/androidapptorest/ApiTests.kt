@@ -1,10 +1,12 @@
 package com.ranrings.libs.androidapptorest
 
+import android.app.Application
 import com.google.gson.Gson
 import com.ranrings.libs.androidapptorest.RequestCallerTest.Companion.getPersonJSONString
 import org.junit.jupiter.api.Assertions.assertNotNull
 import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.Test
+import org.mockito.Mockito.mock
 import java.lang.Exception
 
 class ApiTests {
@@ -14,6 +16,7 @@ class ApiTests {
 
         val port = 4200
         var androidRestServer = AndroidRestServer.Builder()
+            .setApplication(mock(Application::class.java))
             .addRequestHandler(object : RequestHandler<RequestCallerTest.Person, RequestCallerTest.Person>
                 (RequestCallerTest.Person::class.java,RequestCallerTest.Person::class.java)
             {

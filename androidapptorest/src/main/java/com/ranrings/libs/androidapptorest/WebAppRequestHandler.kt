@@ -1,11 +1,10 @@
 package com.ranrings.libs.androidapptorest
 
-import android.app.Application
 import android.content.Context
-import android.webkit.MimeTypeMap
 import java.io.InputStream
-import android.content.res.AssetFileDescriptor
 import java.io.BufferedInputStream
+import java.io.File
+import java.io.FileInputStream
 
 
 class WebAppRequestHandler : InputStreamRequestHandler<String> {
@@ -18,7 +17,7 @@ class WebAppRequestHandler : InputStreamRequestHandler<String> {
 
     var numBytes: Long = 0L
 
-    override fun getMimeType(): String {
+    override fun getMimeType(requestUri: String): String {
         return "text/html"
     }
 
@@ -28,11 +27,14 @@ class WebAppRequestHandler : InputStreamRequestHandler<String> {
 
 
 
-    override fun onRequest(requestBody: String): InputStream {
-        val fileDescriptor = context.assets.openFd("webapp/index.html")
-        return BufferedInputStream(fileDescriptor.createInputStream())
+    override fun onRequestWithUri(requestBody: Any, uri : String): InputStream {
+        val indexHtmlFile = File(getWebFolderPath(context)+"/index.html")
+        return BufferedInputStream(FileInputStream(indexHtmlFile))
     }
 
+    override fun onRequest(requestBody: String): InputStream {
+        return super.onRequest(requestBody)
+    }
 
 
 }

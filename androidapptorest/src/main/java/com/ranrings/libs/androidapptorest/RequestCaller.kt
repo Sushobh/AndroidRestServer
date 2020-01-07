@@ -6,52 +6,87 @@ import fi.iki.elonen.NanoHTTPD
 import fi.iki.elonen.NanoHTTPD.newChunkedResponse
 import fi.iki.elonen.NanoHTTPD.newFixedLengthResponse
 import java.io.InputStream
+import java.lang.Exception
 import kotlin.reflect.KClass
 
 
-internal open class RequestCaller {
-    private val requestHandlers  = arrayListOf<RequestHandler<*,*>>()
-    private val reservedMethodNames = arrayOf("/methods","/methodInfo","/webapp")
+open class RequestCaller {
+    val requestHandlers  = arrayListOf<RequestHandler<*,*>>()
+    val reservedMethodNames = arrayOf("methods","methodInfo")
 
     private var application : Application
 
     constructor(application: Application) {
          this.application = application
          addRequestHandler(WebAppRequestHandler(application))
+         addRequestHandler(PublicFileRequestHandler(application))
+         addRequestHandler(GetMethodsHandler(this))
     }
 
     fun onRequestReceived(session : NanoHTTPD.IHTTPSession): NanoHTTPD.Response {
 
-        val requestHandler : RequestHandler<Any,Any>? = requestHandlers.find {
-            it.getMethodName().equals(parseUriToGetMethodName(session.uri))
-        } as RequestHandler<Any, Any>?
-        requestHandler?.let {
-            if(requestHandler is InputStreamRequestHandler) {
-                return handleInputStreamRequest(requestHandler)
+        val inputStreamHandler : InputStreamRequestHandler<Any>? = requestHandlers.find {
+            session.uri.substring(1,session.uri.length).startsWith(it.getMethodName())
+                    && it is InputStreamRequestHandler
+        } as InputStreamRequestHandler<Any>?
+        if(inputStreamHandler != null){
+            return handleInputStreamRequest(inputStreamHandler,requestUri = session.uri)
+        }
+        else {
+            val requestHandler : RequestHandler<Any,Any>? = requestHandlers.find {
+                it.getMethodName().equals(parseUriToGetMethodName(session.uri))
+            } as RequestHandler<Any, Any>?
+            requestHandler?.let {
+                if(it.isGetRequestHandler() && (it is GetRequestHandler)){
+                   return handleGetRequest(requestHandler,session)
+                }
+                else {
+                    return handlePostRequest(requestHandler,session)
+                }
+
             }
-            else {
-                val postBodyInString = getPostBodyStringFromSession(session)
-                postBodyInString?.let { postBody ->
-                    val requestObject = parsePostBodyFromJSONString(postBody,requestHandler.classOfReq)
-                    val response = convertObjectToJSONString(requestHandler.onRequest(requestObject))
-                    return newFixedLengthResponse(NanoHTTPD.Response.Status.OK, "application/json",
-                        response
-                    );
-                }
-                }
-         }
+        }
 
         return newFixedLengthResponse(NanoHTTPD.Response.Status.NOT_FOUND, "application/json",
                convertObjectToJSONString(ErrorResponse("No method found"))
             );
     }
 
+    private fun handlePostRequest(requestHandler: RequestHandler<Any,Any>,session: NanoHTTPD.IHTTPSession): NanoHTTPD.Response {
+        val postBodyInString = getPostBodyStringFromSession(session)
+        postBodyInString?.let { postBody ->
+            val requestObject = parsePostBodyFromJSONString(postBody,requestHandler.classOfReq)
+            val response = convertObjectToJSONString(requestHandler.onRequest(requestObject))
+            return newFixedLengthResponse(NanoHTTPD.Response.Status.OK, "application/json",
+                response
+            );
+        }
+
+       throw return newFixedLengthResponse(NanoHTTPD.Response.Status.NOT_FOUND, "application/json",
+           convertObjectToJSONString(ErrorResponse("Invalid Request Object"))
+       );
+    }
+
+    private fun handleGetRequest(requestHandler: RequestHandler<*, *>,session: NanoHTTPD.IHTTPSession): NanoHTTPD.Response {
+        val response = convertObjectToJSONString((requestHandler as GetRequestHandler).
+            onGetRequest(session.uri))
+        return newFixedLengthResponse(NanoHTTPD.Response.Status.OK, "application/json",
+            response
+        );
+
+    }
+
+    private fun checkForNonInputStreamRequest() {
+
+    }
+
     private fun handleInputStreamRequest(
         requestHandler: InputStreamRequestHandler<Any>,
-        requestObject: Any = ""
+        requestUri: String = "",
+        requestObject : Any  = Any()
       ): NanoHTTPD.Response {
-        val response : InputStream = requestHandler.onRequest(requestObject)
-        return newChunkedResponse(NanoHTTPD.Response.Status.OK, requestHandler.getMimeType(),
+        val response : InputStream = requestHandler.onRequestWithUri(requestObject,requestUri)
+        return newChunkedResponse(NanoHTTPD.Response.Status.OK, requestHandler.getMimeType(requestUri),
             response
         );
     }

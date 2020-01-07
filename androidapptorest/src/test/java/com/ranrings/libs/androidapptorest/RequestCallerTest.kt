@@ -1,10 +1,13 @@
 package com.ranrings.libs.androidapptorest
 
 import android.app.Activity
+import android.app.Application
+import android.content.Context
 import org.json.JSONObject
 import org.junit.jupiter.api.Assertions.*
 import org.junit.jupiter.api.Test
 import org.mockito.Mockito
+import org.mockito.Mockito.mock
 import org.skyscreamer.jsonassert.JSONAssert
 import java.lang.Exception
 
@@ -12,7 +15,7 @@ import java.lang.Exception
 class RequestCallerTest {
 
 
-    internal var requestCaller = Mockito.spy(RequestCaller())
+    internal var requestCaller = Mockito.spy(RequestCaller(mock(Application::class.java)))
 
 
     @Test

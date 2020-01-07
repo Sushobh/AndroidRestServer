@@ -55,15 +55,16 @@ class AndroidRestServer {
 
         fun setApplication(application: Application): Builder {
             androidRestServer.application = application
-
+            androidRestServer.requestCaller = RequestCaller(application)
             return this
         }
 
         fun build() : AndroidRestServer {
              androidRestServer.application?.let {
-                 androidRestServer.requestCaller = RequestCaller(it)
+                 WebAppExtractor(it).extract()
                  return androidRestServer;
              }
+
             throw Exception("Please set application in the builder")
 
         }
