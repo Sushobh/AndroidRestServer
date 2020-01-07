@@ -20,20 +20,23 @@ open class RequestCaller(application: Application) {
         addRequestHandler(WebAppRequestHandler(application))
         addRequestHandler(PublicFileRequestHandler(application))
         addRequestHandler(GetMethodsHandler(this))
+        addRequestHandler(GetMethodInfoRequestHandler(this))
     }
 
     fun onRequestReceived(session : NanoHTTPD.IHTTPSession): NanoHTTPD.Response {
 
-        val getInputStreamHandler : GetInputStreamRequestHandler? = requestHandlers.find {
+        val getInputStreamHandler : RequestHandler<*, *>? = requestHandlers.find {
             session.uri.substring(1,session.uri.length).startsWith(it.getMethodName())
                     && it is GetInputStreamRequestHandler
-        } as GetInputStreamRequestHandler
+        }
         if(getInputStreamHandler != null){
-            return handleInputStreamRequest(getInputStreamHandler,requestUri = session.uri)
+            return handleInputStreamRequest(getInputStreamHandler as GetInputStreamRequestHandler,requestUri = session.uri)
         }
         else {
             val requestHandler : RequestHandler<*,*>? = requestHandlers.find {
-                it.getMethodName().equals(parseUriToGetMethodName(session.uri))
+                it.getMethodName().equals(parseUriToGetMethodName(session.uri)) ||
+                        (session.uri.substring(1,session.uri.length).startsWith(it.getMethodName())
+                                && it is GetRequestHandler)
             }
             requestHandler?.let {
                 if(it.isGetRequestHandler() && (it is GetRequestHandler)){
