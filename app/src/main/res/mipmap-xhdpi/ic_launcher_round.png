@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="AndroidLayouts">
+    <shared>
+      <config />
+    </shared>
+  </component>
+  <component name="AndroidLogFilters">
+    <option name="TOOL_WINDOW_LOG_LEVEL" value="error" />
+    <option name="TOOL_WINDOW_CONFIGURED_FILTER" value="Show only selected application" />
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="fb5e057c-c149-45be-ada3-3b60a32fa511" name="Default Changelist" comment="">
+      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/codeStyles/Project.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/codeStyles/Project.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/codeStyles/codeStyleConfig.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/codeStyles/codeStyleConfig.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/encodings.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/encodings.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/gradle.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/gradle.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/inspectionProfiles/Project_Default.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/inspectionProfiles/Project_Default.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/runConfigurations.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/runConfigurations.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/vcs.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/app/.gitignore" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/build.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/app/build.gradle" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/proguard-rules.pro" beforeDir="false" afterPath="$PROJECT_DIR$/app/proguard-rules.pro" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/androidTest/java/org/sushobh/friendmoney/ExampleInstrumentedTest.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/androidTest/java/org/sushobh/friendmoney/ExampleInstrumentedTest.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/androidTest/java/org/sushobh/friendmoney/Retrofit/RequestBodies/SignUpRequestBodyTest.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/androidTest/java/org/sushobh/friendmoney/Retrofit/RequestBodies/SignUpRequestBodyTest.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/AndroidManifest.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/AndroidManifest.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/org/sushobh/friendmoney/Base/BaseActivity.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/org/sushobh/friendmoney/Base/BaseActivity.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/org/sushobh/friendmoney/Base/BaseDialogFragment.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/org/sushobh/friendmoney/Base/BaseDialogFragment.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/org/sushobh/friendmoney/Base/BaseModel.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/org/sushobh/friendmoney/Base/BaseModel.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/org/sushobh/friendmoney/Base/BasePresenter.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/org/sushobh/friendmoney/Base/BasePresenter.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/org/sushobh/friendmoney/Base/BaseViewModel.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/org/sushobh/friendmoney/Base/BaseViewModel.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/org/sushobh/friendmoney/CustomViews/Extras.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/org/sushobh/friendmoney/CustomViews/Extras.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/org/sushobh/friendmoney/CustomViews/FMButton.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/org/sushobh/friendmoney/CustomViews/FMButton.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/org/sushobh/friendmoney/CustomViews/FMDateSelectEditText.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/org/sushobh/friendmoney/CustomViews/FMDateSelectEditText.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/org/sushobh/friendmoney/CustomViews/FMEditText.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/org/sushobh/friendmoney/CustomViews/FMEditText.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/org/sushobh/friendmoney/CustomViews/FMProgressBar.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/org/sushobh/friendmoney/CustomViews/FMProgressBar.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/org/sushobh/friendmoney/CustomViews/FMSecondaryButton.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/org/sushobh/friendmoney/CustomViews/FMSecondaryButton.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/org/sushobh/friendmoney/CustomViews/FMTextView.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/org/sushobh/friendmoney/CustomViews/FMTextView.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/org/sushobh/friendmoney/Dagger/App.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/org/sushobh/friendmoney/Dagger/App.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/org/sushobh/friendmoney/Entity/Token.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/org/sushobh/friendmoney/Entity/Token.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/org/sushobh/friendmoney/Entity/User.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/org/sushobh/friendmoney/Entity/User.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/org/sushobh/friendmoney/Extras/Constants.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/mai
