@@ -4,8 +4,7 @@ import kotlin.reflect.KClass
 
 abstract class RequestHandler<RequestBodyType,ResponseBodyType>(
     val classOfReq: KClass<*>,
-    val classOfResp:KClass<*>? = null
-                                                                ) {
+    val classOfResp:KClass<*>? = null) {
     abstract fun getMethodName() : String
     abstract fun onRequest(requestBody : RequestBodyType ) : ResponseBodyType
 

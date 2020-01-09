@@ -12,6 +12,12 @@ class AndroidRestServer {
     private lateinit  var requestCaller : RequestCaller
     private var application : Application? = null
 
+
+    companion object {
+       var startWebAppToo = false
+    }
+
+
     private constructor(){
 
     }
@@ -59,13 +65,21 @@ class AndroidRestServer {
             return this
         }
 
+        fun startWebApp(shouldStart : Boolean): Builder {
+            startWebAppToo = shouldStart
+            return this
+        }
+
         internal fun buildForTest() : AndroidRestServer{
             return androidRestServer
         }
 
         fun build() : AndroidRestServer {
              androidRestServer.application?.let {
-                 WebAppExtractor(it).extract()
+                 if(startWebAppToo){
+                     WebAppExtractor(it).extract()
+                 }
+                 androidRestServer.requestCaller.initialize()
                  return androidRestServer;
              }
              throw Exception("Please set application in the builder")

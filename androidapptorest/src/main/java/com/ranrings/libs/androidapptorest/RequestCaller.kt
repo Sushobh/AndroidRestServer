@@ -12,14 +12,18 @@ import kotlin.collections.HashMap
 import kotlin.reflect.KClass
 
 
-internal open class RequestCaller(application: Application) {
+internal open class RequestCaller(var application: Application) {
     val requestHandlers  = arrayListOf<RequestHandler<*,*>>()
     val reservedMethodNames = arrayListOf<String>()
     val internalrequestNames = arrayListOf<String>()
 
-    init {
-        addRequestHandler(WebAppRequestHandler(application))
-        addRequestHandler(PublicFileRequestHandler(application))
+
+
+    fun initialize() {
+        if(AndroidRestServer.startWebAppToo){
+            addRequestHandler(WebAppRequestHandler(application))
+            addRequestHandler(PublicFileRequestHandler(application))
+        }
         addRequestHandler(GetMethodsHandler(this))
         addRequestHandler(GetMethodInfoRequestHandler(this))
         reservedMethodNames.add("webapp")
@@ -41,7 +45,9 @@ internal open class RequestCaller(application: Application) {
         }
         else {
             val requestHandler : RequestHandler<*,*>? = requestHandlers.find {
-                it.getMethodName().equals(parseUriToGetMethodName(session.uri)) ||
+
+                         it.getMethodName().equals(parseUriToGetMethodName(session.uri))
+                                 ||
                         (session.uri.substring(1,session.uri.length).startsWith(it.getMethodName())
                                 && it is GetRequestHandler)
             }

@@ -11,7 +11,7 @@ internal class GetMethodInfoRequestHandler(var requestCaller: RequestCaller) :
                   return "[Internal request. No information available.]"
               }
               else if(it.isGetRequestHandler()){
-                  return "[${it.getDescription()}]"
+                  return RequestDescription(it.getDescription(),HashMap(),it.getMethodName())
               }
               else {
                   val map = HashMap<String,String>()

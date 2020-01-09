@@ -4,6 +4,7 @@ import android.app.ActivityManager
 import android.app.Application
 import android.content.Context
 import com.ranrings.libs.androidapptorest.AndroidRestServer
+import com.ranrings.libs.androidapptorest.GetRequestHandler
 import com.ranrings.libs.androidapptorest.RequestHandler
 import org.json.JSONObject
 
@@ -20,10 +21,6 @@ class MyApplication : Application() {
 
     override fun onCreate() {
         super.onCreate()
-
-
-
-
 
         val androidRestServer = AndroidRestServer.Builder()
             .setApplication(this)
@@ -54,7 +51,18 @@ class MyApplication : Application() {
                 }
 
             })
+            .addRequestHandler(object : GetRequestHandler() {
+                override fun onGetRequest(uri: String): Any {
+                    return "At best"
+                }
+
+                override fun getMethodName(): String {
+                    return "feel"
+                }
+
+            })
             .
+                startWebApp(true).
                 build()
         androidRestServer.start()
     }
