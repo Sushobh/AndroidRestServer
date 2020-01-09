@@ -55,4 +55,9 @@ public class ApiRequests {
         Observable<JsonElement> makeRequest(@Url String url, @Body Map<String, Object> loginBody);
     }
 
+    public interface GETService  {
+        @POST
+        Observable<JsonElement> makeRequest(@Url String url);
+    }
+
 }

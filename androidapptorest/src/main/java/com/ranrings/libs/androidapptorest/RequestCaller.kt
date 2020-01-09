@@ -164,7 +164,7 @@ internal open class RequestCaller(application: Application) {
     }
 
     fun isInternalRequest(requestName : String) : Boolean{
-       return internalrequestNames.find {
+       return reservedMethodNames.find {
             it.equals(requestName)
         } != null
     }
