@@ -8,7 +8,7 @@ import java.util.zip.ZipEntry
 import java.util.zip.ZipInputStream
 
 
-const val WEB_APP_REAL_FOLDER_NAME = "AndroidRestWebApp"
+const val WEB_APP_REAL_FOLDER_NAME = "jarring-client"
 const val WEB_APP_ZIP_NAME = "AndroidRestWebApp.zip"
 const val WEB_APP_FOLDER_NAME = "dh3holdjhiewgrq2398ef"
 
