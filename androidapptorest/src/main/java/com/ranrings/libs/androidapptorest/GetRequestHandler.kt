@@ -1,6 +1,11 @@
 package com.ranrings.libs.androidapptorest
 
+import fi.iki.elonen.NanoHTTPD
+import java.net.Authenticator
+
 abstract class GetRequestHandler : RequestHandler<String,Any>(String::class) {
+
+
 
     override fun isGetRequestHandler(): Boolean {
         return true

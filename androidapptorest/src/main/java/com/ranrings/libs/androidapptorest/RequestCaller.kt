@@ -19,8 +19,8 @@ internal open class RequestCaller(var application: Application) {
 
 
 
-    fun initialize() {
-        if(AndroidRestServer.startWebAppToo){
+    fun initialize(shouldStartWebApp : Boolean) {
+        if(shouldStartWebApp){
             addRequestHandler(WebAppRequestHandler(application))
             addRequestHandler(PublicFileRequestHandler(application))
         }

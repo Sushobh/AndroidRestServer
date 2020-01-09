@@ -1,5 +1,6 @@
 package com.ranrings.libs.androidapptorest
 
+import fi.iki.elonen.NanoHTTPD
 import kotlin.reflect.KClass
 
 abstract class RequestHandler<RequestBodyType,ResponseBodyType>(

@@ -11,11 +11,8 @@ class AndroidRestServer {
     private lateinit var nanoHttpServer: NanoHttpServer
     private lateinit  var requestCaller : RequestCaller
     private var application : Application? = null
+    private var startWebAppToo = false
 
-
-    companion object {
-       var startWebAppToo = false
-    }
 
 
     private constructor(){
@@ -43,6 +40,9 @@ class AndroidRestServer {
     class Builder {
 
         private var androidRestServer: AndroidRestServer;
+        private var requestHandlers = arrayListOf<RequestHandler<*,*>>()
+        private var application : Application? = null
+        private var shouldStartWebApp = false
 
         constructor(){
             androidRestServer =  AndroidRestServer()
@@ -50,7 +50,7 @@ class AndroidRestServer {
 
 
         fun addRequestHandler(requetHandler : RequestHandler<*,*>) : Builder{
-            androidRestServer.requestCaller.addRequestHandler(requetHandler)
+            requestHandlers.add(requetHandler)
             return this
         }
 
@@ -60,27 +60,27 @@ class AndroidRestServer {
         }
 
         fun setApplication(application: Application): Builder {
-            androidRestServer.application = application
-            androidRestServer.requestCaller = RequestCaller(application)
+            this.application = application
             return this
         }
 
         fun startWebApp(shouldStart : Boolean): Builder {
-            startWebAppToo = shouldStart
+            this.shouldStartWebApp = shouldStart
             return this
         }
 
-        internal fun buildForTest() : AndroidRestServer{
-            return androidRestServer
-        }
+
 
         fun build() : AndroidRestServer {
-             androidRestServer.application?.let {
-                 if(startWebAppToo){
+              application?.let {
+                  if(startWebAppToo){
                      WebAppExtractor(it).extract()
-                 }
-                 androidRestServer.requestCaller.initialize()
-                 return androidRestServer;
+                  }
+                  androidRestServer.application = it
+                  androidRestServer.requestCaller = RequestCaller(it)
+                  androidRestServer.requestCaller.initialize(shouldStartWebApp)
+                  androidRestServer.requestCaller.requestHandlers.addAll(requestHandlers)
+                  return androidRestServer;
              }
              throw Exception("Please set application in the builder")
         }
