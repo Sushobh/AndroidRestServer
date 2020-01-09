@@ -66,25 +66,35 @@ internal open class RequestCaller(application: Application) {
         postBodyInString?.let { postBody ->
             val requestObject = parsePostBodyFromJSONString(postBody,requestHandler.classOfReq)
             val response = convertObjectToJSONString(requestHandler.onRequest(requestObject))
-            return newFixedLengthResponse(NanoHTTPD.Response.Status.OK, "application/json",
+
+            return allowOrigin(newFixedLengthResponse(NanoHTTPD.Response.Status.OK, "application/json",
                 response
-            );
+            ))
         }
 
-       throw return newFixedLengthResponse(NanoHTTPD.Response.Status.NOT_FOUND, "application/json",
-           convertObjectToJSONString(ErrorResponse("Invalid Request Object"))
-       );
+        return allowOrigin(newFixedLengthResponse(NanoHTTPD.Response.Status.NOT_FOUND, "application/json",
+            convertObjectToJSONString(ErrorResponse("Invalid Request Object"))
+        ))
     }
 
     private fun handleGetRequest(requestHandler: RequestHandler<*, *>,session: NanoHTTPD.IHTTPSession): NanoHTTPD.Response {
         val response = convertObjectToJSONString((requestHandler as GetRequestHandler).
             onGetRequest(session.uri))
-        return newFixedLengthResponse(NanoHTTPD.Response.Status.OK, "application/json",
-            response
-        );
 
+        return allowOrigin(newFixedLengthResponse(NanoHTTPD.Response.Status.OK, "application/json",
+            response
+        ))
     }
 
+
+    fun allowOrigin(resp : NanoHTTPD.Response) :  NanoHTTPD.Response {
+        resp.addHeader("Access-Control-Allow-Origin", "*");
+        resp.addHeader("Access-Control-Max-Age", "3628800");
+        resp.addHeader("Access-Control-Allow-Methods", "GET, POST, PUT, OPTIONS");
+        resp.addHeader("Access-Control-Allow-Headers", "X-Requested-With");
+        resp.addHeader("Access-Control-Allow-Headers", "Authorization");
+        return resp
+    }
 
 
     private fun handleInputStreamRequest(
@@ -180,7 +190,7 @@ internal open class RequestCaller(application: Application) {
         return toReturn
     }
 
-    fun <T : Any> parsePostBodyFromJSONString(postBodyString : String,classType : KClass<T>) : T  {
+    fun <T : Any> parsePostBodyFromJSONString(postBodyString : String,classType : KClass<T>) : T {
         return Gson().fromJson(postBodyString,classType.java)
     }
 
@@ -191,6 +201,7 @@ internal open class RequestCaller(application: Application) {
     class WrongRequestHandlerException(message : String) : java.lang.Exception(message){
 
     }
+
 
 
 }

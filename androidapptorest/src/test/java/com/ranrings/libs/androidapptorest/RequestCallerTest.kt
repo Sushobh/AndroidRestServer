@@ -35,7 +35,7 @@ class RequestCallerTest {
 
     @Test
     fun parsePostBodyFromJSONString() {
-        val someString = getPersonJSONString()
+        val someString = getPersonJSONString2()
         val person : Person = requestCaller.parsePostBodyFromJSONString(someString,Person::class)
         assertNotNull(someString)
         assertEquals(person.age,120)
@@ -107,6 +107,10 @@ class RequestCallerTest {
             'alive' : false
             }
         """.trimIndent()
+       }
+
+       fun getPersonJSONString2() : String {
+           return "{\"name\" : \"Sushobh\",\"alive\" : true,\"age\" : 2}"
        }
 
 

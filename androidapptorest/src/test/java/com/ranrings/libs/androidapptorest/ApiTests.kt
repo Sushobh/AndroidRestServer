@@ -46,7 +46,7 @@ class ApiTests {
         val result = service.makeRequest("/method",map).blockingFirst()
         assertTrue( result.asJsonObject.keySet().size == 3)
         assertNotNull(result)
-        Thread.sleep(1000*60*10)
+        Thread.sleep(2000)
         androidRestServer.stop()
 
     }
@@ -81,6 +81,17 @@ class ApiTests {
         Thread.sleep(2000)
     }
 
+    @Test
+    fun test5(){
+        var service = ApiRequests.getVeryOwnRetrofit(8080)
+            .create(ApiRequests.POSTService::class.java)
+        val map : Map<String,Any> =  mapOf("name" to "Sushobh Nadiger", "age" to 120, "alive" to false)
+        val result = service.makeRequest("/getpersonsummary",map).blockingFirst()
+        assertTrue( result.asJsonObject.keySet().size == 3)
+        assertNotNull(result)
+        Thread.sleep(2000)
+    }
 
 
+//{"name":"Sushobh Nadiger","age":120,"alive":false}
 }
