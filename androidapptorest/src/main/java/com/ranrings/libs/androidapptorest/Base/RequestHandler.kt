@@ -1,21 +1,24 @@
-package com.ranrings.libs.androidapptorest
+package com.ranrings.libs.androidapptorest.Base
 
-import fi.iki.elonen.NanoHTTPD
 import kotlin.reflect.KClass
 
 abstract class RequestHandler<RequestBodyType,ResponseBodyType>(
     val classOfReq: KClass<*>,
-    val classOfResp:KClass<*>? = null) {
+    val classOfResp:KClass<*>? = null)
+
+{
     abstract fun getMethodName() : String
     abstract fun onRequest(requestBody : RequestBodyType ) : ResponseBodyType
+    abstract fun getMethodType() : ASMethodType
 
     fun getDescription() : String {
         return "No Description available"
     }
 
-    open fun isGetRequestHandler() : Boolean
-    {
-        return false
+
+
+    enum class ASMethodType {
+        GET,POST
     }
 
 

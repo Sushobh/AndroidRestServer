@@ -1,13 +1,16 @@
-package com.ranrings.libs.androidapptorest
+package com.ranrings.libs.androidapptorest.HandlerRepo
 
 import android.content.Context
+import com.ranrings.libs.androidapptorest.Base.GetInputStreamRequestHandler
+import com.ranrings.libs.androidapptorest.getWebFolderPath
 import java.io.InputStream
 import java.io.BufferedInputStream
 import java.io.File
 import java.io.FileInputStream
 
 
-class WebAppRequestHandler : GetInputStreamRequestHandler {
+class WebAppRequestHandler :
+    GetInputStreamRequestHandler {
 
     var context : Context
 
@@ -27,8 +30,11 @@ class WebAppRequestHandler : GetInputStreamRequestHandler {
 
 
 
-    override fun onGetRequest(uri: String): Any {
-        val indexHtmlFile = File(getWebFolderPath(context)+"/index.html")
+    override fun onGetRequest(uri: String): InputStream {
+        val indexHtmlFile = File(
+            getWebFolderPath(
+                context
+            ) +"/index.html")
         return BufferedInputStream(FileInputStream(indexHtmlFile))
     }
 

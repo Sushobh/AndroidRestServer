@@ -1,11 +1,14 @@
-package com.ranrings.libs.androidapptorest
+package com.ranrings.libs.androidapptorest.HandlerRepo
 
-internal class GetMethodsHandler(var requestCaller: RequestCaller) : GetRequestHandler() {
+import com.ranrings.libs.androidapptorest.Base.GetRequestHandler
+import com.ranrings.libs.androidapptorest.RequestCaller
+
+internal class GetMethodsHandler(var requestCaller: RequestCaller) : GetRequestHandler<Any>() {
 
 
     override fun onGetRequest(uri: String) : Any{
         val methodNames  = arrayListOf<String>()
-        requestCaller.requestHandlers.forEach {handler ->
+        requestCaller.getRequestHandlers().forEach {handler ->
             if(!requestCaller.isInternalRequest(handler.getMethodName())){
                 methodNames.add(handler.getMethodName())
             }

@@ -4,8 +4,9 @@ import android.app.ActivityManager
 import android.app.Application
 import android.content.Context
 import com.ranrings.libs.androidapptorest.AndroidRestServer
-import com.ranrings.libs.androidapptorest.GetRequestHandler
-import com.ranrings.libs.androidapptorest.RequestHandler
+import com.ranrings.libs.androidapptorest.Base.GetRequestHandler
+import com.ranrings.libs.androidapptorest.Base.PostRequestHandler
+import com.ranrings.libs.androidapptorest.Base.RequestHandler
 import org.json.JSONObject
 
 
@@ -25,7 +26,7 @@ class MyApplication : Application() {
         val androidRestServer = AndroidRestServer.Builder()
             .setApplication(this)
             .setPort(8080)
-            .addRequestHandler(object : RequestHandler<Person,Any>(Person::class) {
+            .addRequestHandler(object : PostRequestHandler<Person, Any>(Person::class) {
                 override fun getMethodName(): String {
                     return "getpackagename"
                 }
@@ -36,7 +37,7 @@ class MyApplication : Application() {
                     }
                 }
 
-            }).addRequestHandler(object : RequestHandler<Person,Any>(Person::class) {
+            }).addRequestHandler(object : PostRequestHandler<Person, Any>(Person::class) {
                 override fun getMethodName(): String {
                     return "getcurrentactivity"
                 }
@@ -51,7 +52,7 @@ class MyApplication : Application() {
                 }
 
             })
-            .addRequestHandler(object : GetRequestHandler() {
+            .addRequestHandler(object : GetRequestHandler<Any>() {
                 override fun onGetRequest(uri: String): Any {
                     return "At best"
                 }

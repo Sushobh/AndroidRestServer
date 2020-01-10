@@ -2,6 +2,7 @@ package com.ranrings.libs.androidapptorest
 
 import android.app.Activity
 import android.app.Application
+import com.ranrings.libs.androidapptorest.Base.PostRequestHandler
 import org.json.JSONObject
 import org.junit.jupiter.api.Assertions.*
 import org.junit.jupiter.api.Test
@@ -38,9 +39,9 @@ class RequestCallerTest {
         val someString = getPersonJSONString2()
         val person : Person = requestCaller.parsePostBodyFromJSONString(someString,Person::class)
         assertNotNull(someString)
-        assertEquals(person.age,120)
-        assertEquals(person.name,"SushobhNadiger")
-        assertFalse(person.alive)
+        assertEquals(person.age,2)
+        assertEquals(person.name,"Sushobh")
+        assertTrue(person.alive)
     }
 
     @Test
@@ -87,7 +88,7 @@ class RequestCallerTest {
 
     open class TestMethodHandler<RQ : Any, RB : Any>(var nameOfMethod: String,
                                                      var body: RB, val classReq : KClass<RQ>, val classRes : KClass<RB>) :
-        RequestHandler<RQ, RB>(classReq,classRes) {
+        PostRequestHandler<RQ, RB>(classReq) {
         override fun getMethodName(): String {
             return nameOfMethod
         }
