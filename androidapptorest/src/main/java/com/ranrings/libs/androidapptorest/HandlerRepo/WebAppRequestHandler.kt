@@ -9,7 +9,7 @@ import java.io.File
 import java.io.FileInputStream
 
 
-class WebAppRequestHandler :
+internal class WebAppRequestHandler :
     GetInputStreamRequestHandler {
 
     var context : Context
