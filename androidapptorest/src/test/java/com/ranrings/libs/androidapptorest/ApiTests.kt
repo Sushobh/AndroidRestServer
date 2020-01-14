@@ -1,6 +1,7 @@
 package com.ranrings.libs.androidapptorest
 
 import android.app.Application
+import com.ranrings.libs.androidapptorest.Base.PostRequestHandler
 import org.junit.jupiter.api.Assertions.assertNotNull
 import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.Test
@@ -14,8 +15,8 @@ class ApiTests {
         val port = 4300
         var androidRestServer = AndroidRestServer.Builder()
             .setApplication(mock(Application::class.java))
-            .addRequestHandler(object : RequestHandler<RequestCallerTest.Person, RequestCallerTest.Person>
-                (RequestCallerTest.Person::class,RequestCallerTest.Person::class)
+            .addRequestHandler(object : PostRequestHandler<RequestCallerTest.Person, RequestCallerTest.Person>
+                (RequestCallerTest.Person::class)
             {
                 override fun getMethodName(): String {
                     return "method"
@@ -26,8 +27,8 @@ class ApiTests {
                 }
 
             }).
-        addRequestHandler(object : RequestHandler<RequestCallerTest.Person, RequestCallerTest.Person>
-            (RequestCallerTest.Person::class,RequestCallerTest.Person::class)
+        addRequestHandler(object : PostRequestHandler<RequestCallerTest.Person, RequestCallerTest.Person>
+            (RequestCallerTest.Person::class)
         {
             override fun getMethodName(): String {
                 return "methodtwo"
@@ -38,7 +39,7 @@ class ApiTests {
             }
 
         })
-            .setPort(port).buildForTest()
+            .setPort(port).build()
         androidRestServer.start()
         var service = ApiRequests.getVeryOwnRetrofit(port)
             .create(ApiRequests.POSTService::class.java)
@@ -51,46 +52,7 @@ class ApiTests {
 
     }
 
-    @Test
-    fun test3(){
-        val port = 4300
-        var androidRestServer = AndroidRestServer.Builder()
-            .setApplication(mock(Application::class.java)).setPort(port).buildForTest()
-        androidRestServer.start()
-        var service = ApiRequests.getVeryOwnRetrofit(port)
-            .create(ApiRequests.POSTService::class.java)
-        val map : Map<String,Any> =  mapOf("methodName" to "getmethodinfo")
-        val result = service.makeRequest("/getmethodinfo",map).blockingFirst()
-        assertTrue( result.asJsonObject.keySet().size == 3)
-        assertNotNull(result)
-        androidRestServer.stop()
-        Thread.sleep(2000)
-    }
 
-    @Test
-    fun test4(){
-        val port = 4300
-        var androidRestServer = AndroidRestServer.Builder()
-            .setApplication(mock(Application::class.java)).setPort(port).buildForTest()
-        androidRestServer.start()
-        var service = ApiRequests.getVeryOwnRetrofit(port)
-            .create(ApiRequests.GETService::class.java)
-        val result = service.makeRequest("/getmethodinfo").blockingFirst()
-        assertNotNull(result)
-        androidRestServer.stop()
-        Thread.sleep(2000)
-    }
-
-    @Test
-    fun test5(){
-        var service = ApiRequests.getVeryOwnRetrofit(8080)
-            .create(ApiRequests.POSTService::class.java)
-        val map : Map<String,Any> =  mapOf("name" to "Sushobh Nadiger", "age" to 120, "alive" to false)
-        val result = service.makeRequest("/getpersonsummary",map).blockingFirst()
-        assertTrue( result.asJsonObject.keySet().size == 3)
-        assertNotNull(result)
-        Thread.sleep(2000)
-    }
 
 
 //{"name":"Sushobh Nadiger","age":120,"alive":false}

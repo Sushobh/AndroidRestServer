@@ -1,6 +1,7 @@
 package com.ranrings.libs.androidapptorest
 
 import android.app.Application
+import com.ranrings.libs.androidapptorest.Base.RequestHandler
 import fi.iki.elonen.NanoHTTPD
 import java.lang.Exception
 
@@ -11,7 +12,7 @@ class AndroidRestServer {
     private lateinit var nanoHttpServer: NanoHttpServer
     private lateinit  var requestCaller : RequestCaller
     private var application : Application? = null
-    private var startWebAppToo = false
+
 
 
 
@@ -40,7 +41,7 @@ class AndroidRestServer {
     class Builder {
 
         private var androidRestServer: AndroidRestServer;
-        private var requestHandlers = arrayListOf<RequestHandler<*,*>>()
+        private var requestHandlers = arrayListOf<RequestHandler<*, *>>()
         private var application : Application? = null
         private var shouldStartWebApp = false
 
@@ -49,7 +50,7 @@ class AndroidRestServer {
         }
 
 
-        fun addRequestHandler(requetHandler : RequestHandler<*,*>) : Builder{
+        fun addRequestHandler(requetHandler : RequestHandler<*, *>) : Builder{
             requestHandlers.add(requetHandler)
             return this
         }
@@ -79,7 +80,9 @@ class AndroidRestServer {
                   androidRestServer.application = it
                   androidRestServer.requestCaller = RequestCaller(it)
                   androidRestServer.requestCaller.initialize(shouldStartWebApp)
-                  androidRestServer.requestCaller.requestHandlers.addAll(requestHandlers)
+                  requestHandlers.forEach({
+                      androidRestServer.requestCaller.addRequestHandler(it)
+                  })
                   return androidRestServer;
              }
              throw Exception("Please set application in the builder")
