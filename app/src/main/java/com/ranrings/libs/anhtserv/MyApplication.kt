@@ -5,19 +5,11 @@ import android.app.Application
 import android.content.Context
 import com.ranrings.libs.androidapptorest.AndroidRestServer
 import com.ranrings.libs.androidapptorest.GetRequestHandler
-import com.ranrings.libs.androidapptorest.RequestHandler
 import org.json.JSONObject
 
 
 
 class MyApplication : Application() {
-
-    data class Person(var name: String){
-
-    }
-
-
-
 
     override fun onCreate() {
         super.onCreate()
@@ -25,41 +17,15 @@ class MyApplication : Application() {
         val androidRestServer = AndroidRestServer.Builder()
             .setApplication(this)
             .setPort(8080)
-            .addRequestHandler(object : RequestHandler<Person,Any>(Person::class) {
-                override fun getMethodName(): String {
-                    return "getpackagename"
-                }
-
-                override fun onRequest(requestBody: Person): Any {
+            .addRequestHandler(object : GetRequestHandler() {
+                override fun onGetRequest(uri: String): Any {
                     return JSONObject().apply {
                         put("packagename",this@MyApplication.packageName)
                     }
                 }
-
-            }).addRequestHandler(object : RequestHandler<Person,Any>(Person::class) {
                 override fun getMethodName(): String {
-                    return "getcurrentactivity"
+                    return "getpackagename"
                 }
-
-                override fun onRequest(requestBody: Person): Any {
-                    val am =
-                        getSystemService(Context.ACTIVITY_SERVICE) as ActivityManager
-                    val cn = am.getRunningTasks(1)[0].topActivity
-                    return JSONObject().apply {
-                        put("packagename",cn.className)
-                    }
-                }
-
-            })
-            .addRequestHandler(object : GetRequestHandler() {
-                override fun onGetRequest(uri: String): Any {
-                    return "At best"
-                }
-
-                override fun getMethodName(): String {
-                    return "feel"
-                }
-
             })
             .
                 startWebApp(true).

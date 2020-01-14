@@ -73,7 +73,7 @@ class AndroidRestServer {
 
         fun build() : AndroidRestServer {
               application?.let {
-                  if(startWebAppToo){
+                  if(shouldStartWebApp){
                      WebAppExtractor(it).extract()
                   }
                   androidRestServer.application = it

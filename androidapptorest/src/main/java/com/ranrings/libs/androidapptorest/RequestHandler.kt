@@ -3,7 +3,7 @@ package com.ranrings.libs.androidapptorest
 import fi.iki.elonen.NanoHTTPD
 import kotlin.reflect.KClass
 
-abstract class RequestHandler<RequestBodyType,ResponseBodyType>(
+abstract  class RequestHandler<RequestBodyType,ResponseBodyType>(
     val classOfReq: KClass<*>,
     val classOfResp:KClass<*>? = null) {
     abstract fun getMethodName() : String
