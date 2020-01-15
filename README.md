@@ -18,6 +18,8 @@ A web and rest interface to your Android application. Allows you to access Appli
   - Access SharedPreferences data.
   - Get the name of the current activity.
   - Creating a file browser for your device as a web app.
+  
+  Basically anything info that you need from your Android app.
 
 
 
