@@ -16,6 +16,8 @@ class MyApplication : Application() {
 
     val port = 8080
 
+    data class Person(var name: String , var age : Int, var city : String)
+
     companion object {
         lateinit var application: MyApplication
     }
@@ -25,7 +27,6 @@ class MyApplication : Application() {
         application = this
         val androidRestServer = AndroidRestServer.Builder()
             .setApplication(this)
-
             .setPort(port)
             .addRequestHandler(object : GetRequestHandler<Any>(){
 
@@ -37,7 +38,18 @@ class MyApplication : Application() {
                     return "getpackagename"
                 }
 
-            }).startWebApp(true).build()
+            }).
+                addRequestHandler(object : PostRequestHandler<Person,Any> (Person::class){
+                    override fun getMethodName(): String {
+                        return "personsummary"
+                    }
+
+                    override fun onRequest(requestBody: Person): Any {
+                        return "${requestBody.name} is ${requestBody.age} years of age and lives in ${requestBody.city}."
+                    }
+
+                }).
+                startWebApp(true).build()
 
         androidRestServer.start()
 
