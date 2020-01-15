@@ -1,6 +1,6 @@
 # AndroidRestServer [![](https://jitpack.io/v/Sushobh/AndroidRestServer.svg)](https://jitpack.io/#Sushobh/AndroidRestServer)
 
-A web and rest interface to your Android application. Allows you to access Application specific state/data via REST api or a web interface.
+A web and REST interface to your Android application. Allows you to access Application specific state/data via REST api or a web interface.
 
 ## Building blocks.
    The library is built up of two components.
@@ -92,12 +92,13 @@ And then add the dependency in your app level gradle file
    ```
    
    ### Things to note.
-   - The library will create the server on the port of your choosing in your device. 
+   - The library will create the server on the port of your choosing in your device. You will then need to run an adb command 
+   mentioned in the upcoming section.
    - In order to to create a GET request handler , you need to extend GetRequestHandler and in order to create a POST request 
    handler you will need to extend the post request handler class as can be seen in the above code snipet.
    - When you extend the POST request handler , you will need to create a data class which describes the post request body
       structure. AndroidRestServer then converts the post body into an instance of the data class.
-   -  **Note that only data     classes are supported for this purpose and and only int,boolean,string,double fields inside data classes are supported**.   
+   -  **Note that only data classes are supported for this purpose and and only _int,boolean,string,double_ fields inside data classes are supported**.   
    - ***Do not define your post body data classes inside functions, always create them in classes or seperate Kotlin files.If you define data classes inside functions , the library will be unable to parse the post body.***
    -  The library will throw an exception if you do not use a data class or use a field that is not supported inside of the data class.   
   -  In the web application, form fields are dynamiclly generated based on the fields of the data class. Refer to the screen shots to see how the person class is used to create three form fields for age,name,city.  
@@ -116,7 +117,7 @@ And then add the dependency in your app level gradle file
    If you chose not to start the webapp you can access the apis 
    ,directly at **http://localhost:8080/[your_method_name]**
    
-   for example if your method name is getcurrentactivity you will access it like this
+   for example if your method name is **getcurrentactivity** you will access it like this
    **http://localhost:8080/getcurrentactivity**
    
       
