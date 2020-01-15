@@ -1,7 +1,6 @@
 # AndroidRestServer [![](https://jitpack.io/v/Sushobh/AndroidRestServer.svg)](https://jitpack.io/#Sushobh/AndroidRestServer)
 
-A web and rest interface to your Android application. Allows you to access Application info right from Shared preferences
-to SQLite queries using a REST interface/ Web interface.
+A web and rest interface to your Android application. Allows you to access Application specific state/data via REST api or a web interface.
 
 ## Building blocks.
    The library is built up of two components.
@@ -13,6 +12,12 @@ to SQLite queries using a REST interface/ Web interface.
 
    ![](https://raw.github.com/Sushobh/AndroidRestServer/master/Screenshot2.png)
    ![](https://raw.github.com/Sushobh/AndroidRestServer/master/Screenshot1.png)
+   
+## Use cases
+  - Run SQLite queries using a REST Api.
+  - Access SharedPreferences data.
+  - Get the name of the current activity.
+  - Creating a file browser for your device as a web app.
 
 
 
@@ -91,6 +96,7 @@ And then add the dependency in your app level gradle file
    - When you extend the POST request handler , you will need to create a data class which describes the post request body
       structure. AndroidRestServer then converts the post body into an instance of the data class.
    -  **Note that only data     classes are supported for this purpose and and only int,boolean,string,double fields inside data classes are supported**.   
+   - ***Do not define your post body data classes inside functions, always create them in classes or seperate Kotlin files.If you define data classes inside functions , the library will be unable to parse the post body.***
    -  The library will throw an exception if you do not use a data class or use a field that is not supported inside of the data class.   
   -  In the web application, form fields are dynamiclly generated based on the fields of the data class. Refer to the screen shots to see how the person class is used to create three form fields for age,name,city.  
   
@@ -117,10 +123,10 @@ And then add the dependency in your app level gradle file
     
 # What next? 
   Here is a list of things that i want to do next.
+- [x] Create the library and publish it.  
 - [ ] Add support for creating request handlers which will serve files.
 - [ ] Add more tests and allow support for Map request body in post requests.
 - [ ] Find out a way to run the adb port forward command programatically.
-- [ ] Add more tests to cover most of the code.
    
    
    
