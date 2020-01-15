@@ -25,8 +25,10 @@ class MyApplication : Application() {
         application = this
         val androidRestServer = AndroidRestServer.Builder()
             .setApplication(this)
+
             .setPort(port)
             .addRequestHandler(object : GetRequestHandler<Any>(){
+
                 override fun onGetRequest(uri: String): Any {
                     return packageName
                 }
