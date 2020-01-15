@@ -1,4 +1,5 @@
-# AndroidRestServer
+# AndroidRestServer [![](https://jitpack.io/v/Sushobh/AndroidRestServer.svg)](https://jitpack.io/#Sushobh/AndroidRestServer)
+
 A web and rest interface to your Android application. Allows you to access Application info right from Shared preferences
 to SQLite queries using a REST interface/ Web interface.
 
