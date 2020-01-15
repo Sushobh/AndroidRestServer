@@ -35,7 +35,7 @@ And then add the dependency in your app level gradle file
   
 ## How to use it? 
    Once you have imported the library,  you will need to initialize the library in you application class.
-   For example here is you how you create two requests , one GET and another one which is post.
+   For example here is you how you create two requests , one GET and another one which is POST.
    ```java
                class MyApplication : Application() {
 
@@ -102,12 +102,24 @@ And then add the dependency in your app level gradle file
     
    The second port is the port where you will access the api and the web application, you can choose a different port also.
    Once you have done this, visit the link.
-   **http://localhost:8080/webapp** to access the web app.
+   **http://localhost:8080/webapp** to access the web app. 
    
+   If you chose not to start the webapp you can access the apis 
+   ,directly at **http://localhost:8080/[your_method_name]**
+   
+   for example if your method name is getcurrentactivity you will access it like this
+   **http://localhost:8080/getcurrentactivity**
+   
+      
 
     
     
-   
+# What next? 
+  Here is a list of things that i want to do next.
+- [ ] Add support for creating request handlers which will serve files.
+- [ ] Add more tests and allow support for Map request body in post requests.
+- [ ] Find out a way to run the adb port forward command programatically.
+- [ ] Add more tests to cover most of the code.
    
    
    
