@@ -33,7 +33,7 @@ class WebAppExtractor{
 
 
 
-    internal fun extractFromAssets(assetName : String): Boolean {
+     fun extractFromAssets(assetName : String): Boolean {
         val inputStream: InputStream
         val zis: ZipInputStream
         try {
@@ -74,6 +74,8 @@ class WebAppExtractor{
         }
         return true
     }
+
+
 
 
 }
