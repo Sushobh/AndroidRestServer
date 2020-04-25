@@ -9,7 +9,7 @@ import java.io.FileInputStream
 import java.io.InputStream
 
 
-internal class PublicFileRequestHandler :
+open class PublicFileRequestHandler :
     GetInputStreamRequestHandler {
 
     var context : Context
@@ -23,7 +23,6 @@ internal class PublicFileRequestHandler :
         "js" -> "application/javascript"
         "css" -> "application/css"
         else -> "text/plain"
-
     }
 
 
@@ -37,7 +36,7 @@ internal class PublicFileRequestHandler :
         return BufferedInputStream(FileInputStream(file))
     }
 
-    fun getFilePath(uri : String) : String {
+    open fun getFilePath(uri : String) : String {
        return getWebFolderPath(context) +"/${uri.split("/")[2]}"
     }
 }

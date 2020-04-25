@@ -75,7 +75,7 @@ class AndroidRestServer {
         fun build() : AndroidRestServer {
               application?.let {
                   if(shouldStartWebApp){
-                     WebAppExtractor(it).extract()
+                     WebAppExtractor(it,WEB_APP_FOLDER_NAME).extractFromAssets(WEB_APP_ZIP_NAME)
                   }
                   androidRestServer.application = it
                   androidRestServer.requestCaller = RequestCaller(it)

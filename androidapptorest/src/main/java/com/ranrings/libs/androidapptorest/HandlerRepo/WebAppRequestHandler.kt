@@ -9,7 +9,7 @@ import java.io.File
 import java.io.FileInputStream
 
 
-internal class WebAppRequestHandler :
+open  class WebAppRequestHandler :
     GetInputStreamRequestHandler {
 
     var context : Context
@@ -31,11 +31,14 @@ internal class WebAppRequestHandler :
 
 
     override fun onGetRequest(uri: String): InputStream {
-        val indexHtmlFile = File(
-            getWebFolderPath(
-                context
-            ) +"/index.html")
+        val indexHtmlFile = File(getIndexHtmlFilePath())
         return BufferedInputStream(FileInputStream(indexHtmlFile))
+    }
+
+    open fun getIndexHtmlFilePath() : String {
+        return getWebFolderPath(
+            context
+        ) +"/index.html"
     }
 
 

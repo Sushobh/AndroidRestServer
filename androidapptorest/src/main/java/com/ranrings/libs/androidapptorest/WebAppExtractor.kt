@@ -2,6 +2,7 @@ package com.ranrings.libs.androidapptorest
 
 import android.app.Application
 import android.content.Context
+import android.renderscript.ScriptGroup
 import java.io.*
 import java.lang.Exception
 import java.util.zip.ZipEntry
@@ -23,20 +24,21 @@ class WebAppExtractor{
     var folderInInternalStorage : String
 
 
-    constructor(context: Context){
+    constructor(context: Context,webAppFolderNameInFilesDir : String){
         this.context = context
-        folderInInternalStorage = context.filesDir.path+"/${WEB_APP_FOLDER_NAME}"
+        folderInInternalStorage = context.filesDir.path+"/${webAppFolderNameInFilesDir}"
         val file = File(folderInInternalStorage)
         file.mkdirs()
     }
 
 
-    fun extract(): Boolean {
+
+    internal fun extractFromAssets(assetName : String): Boolean {
         val inputStream: InputStream
         val zis: ZipInputStream
         try {
             var filename: String
-            inputStream = context.assets.open(WEB_APP_ZIP_NAME)
+            inputStream = context.assets.open(assetName)
             zis = ZipInputStream(BufferedInputStream(inputStream))
             var ze: ZipEntry?
             val buffer = ByteArray(1024)
