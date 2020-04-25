@@ -37,7 +37,7 @@ allprojects {
 And then add the dependency in your app level gradle file
 ```java
    dependencies {
-		 implementation 'com.github.Sushobh:AndroidRestServer:d28c38d93b'
+		  implementation 'com.github.Sushobh:AndroidRestServer:b0fc9589b1'
     }
 ```
   
