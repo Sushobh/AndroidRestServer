@@ -14,8 +14,6 @@ android {
     defaultConfig {
         minSdkVersion 16
         targetSdkVersion 28
-        versionCode 1
-        versionName "1.0"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
 
@@ -37,12 +35,12 @@ dependencies {
     testImplementation group: 'org.junit.jupiter', name: 'junit-jupiter-engine', version: '5.3.2'
     androidTestImplementation 'androidx.test:runner:1.2.0'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
-    compile "androidx.core:core-ktx:+"
+    api "androidx.core:core-ktx:1.6.0"
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
     implementation "org.nanohttpd:nanohttpd:2.2.0"
 // https://mvnrepository.com/artifact/org.mockito/mockito-core
-    testCompile group: 'org.mockito', name: 'mockito-core', version: '2.1.0'
-    testCompile group: 'org.skyscreamer', name: 'jsonassert', version: '1.5.0'
+    testImplementation group: 'org.mockito', name: 'mockito-core', version: '2.1.0'
+    testImplementation group: 'org.skyscreamer', name: 'jsonassert', version: '1.5.0'
     implementation 'com.google.code.gson:gson:2.8.6'
 
     testImplementation 'com.squareup.retrofit2:adapter-rxjava2:2.5.0'
@@ -51,9 +49,6 @@ dependencies {
     testImplementation 'com.squareup.retrofit2:converter-gson:2.5.0'
     testImplementation 'com.squareup.retrofit2:converter-scalars:2.5.0'
     implementation "org.jetbrains.kotlin:kotlin-reflect:1.3.61"
-
-
-
 }
 repositories {
     mavenCentral()
