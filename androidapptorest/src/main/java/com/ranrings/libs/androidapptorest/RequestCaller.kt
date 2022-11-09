@@ -14,15 +14,14 @@ import fi.iki.elonen.NanoHTTPD.newChunkedResponse
 import fi.iki.elonen.NanoHTTPD.newFixedLengthResponse
 import java.io.InputStream
 import java.util.*
-import kotlin.collections.ArrayList
-import kotlin.collections.HashMap
 import kotlin.reflect.KClass
 
 
 internal open class RequestCaller(var application: Application) {
     private val requestHandlers = arrayListOf<RequestHandler<*, *>>()
-    val reservedMethodNames = arrayListOf<String>()
-    val internalrequestNames = arrayListOf<String>()
+    private val reservedMethodNames = arrayListOf<String>()
+    private val internalrequestNames = arrayListOf<String>()
+    private val webApps = arrayListOf<WebApp>()
 
 
     fun initialize(shouldStartWebApp: Boolean) {
@@ -251,8 +250,20 @@ internal open class RequestCaller(var application: Application) {
 
     }
 
+    class WrongWebAppConfigException(messge: String) : java.lang.Exception(messge) {
+
+    }
+
     fun getRequestHandlers(): ArrayList<RequestHandler<*, *>> {
         return ArrayList(requestHandlers)
+    }
+
+    fun addWebApp(webApp: WebApp) {
+        if (webApps.find { it.getWebAppFoldeName().equals(webApp.getWebAppFoldeName()) } != null) {
+            throw WrongWebAppConfigException("WebApp root path name or foler path already is being used")
+        }
+        addRequestHandler(webApp)
+        webApps.add(webApp)
     }
 
 

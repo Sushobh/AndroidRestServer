@@ -9,25 +9,27 @@ import java.io.FileInputStream
 import java.io.InputStream
 
 
-open class PublicFileRequestHandler :
+internal class PublicFileRequestHandler :
     GetInputStreamRequestHandler {
 
-    var context : Context
+    var context: Context
 
-    constructor( context: Context) : super() {
+    constructor(context: Context) : super() {
         this.context = context
     }
 
 
-    override fun getMimeType(requestUri: String): String = when (File(getFilePath(requestUri)).extension){
-        "js" -> "application/javascript"
-        "css" -> "application/css"
-        else -> "text/plain"
-    }
+    override fun getMimeType(requestUri: String): String =
+        when (File(getFilePath(requestUri)).extension) {
+            "js" -> "application/javascript"
+            "css" -> "application/css"
+            "json" -> "application/json"
+            else -> "text/plain"
+        }
 
 
     override fun getMethodName(): String {
-       return "public"
+        return "public"
     }
 
 

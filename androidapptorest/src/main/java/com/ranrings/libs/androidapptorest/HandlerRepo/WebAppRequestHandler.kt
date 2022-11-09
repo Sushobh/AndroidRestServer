@@ -3,18 +3,18 @@ package com.ranrings.libs.androidapptorest.HandlerRepo
 import android.content.Context
 import com.ranrings.libs.androidapptorest.Base.GetInputStreamRequestHandler
 import com.ranrings.libs.androidapptorest.getWebFolderPath
-import java.io.InputStream
 import java.io.BufferedInputStream
 import java.io.File
 import java.io.FileInputStream
+import java.io.InputStream
 
 
-open  class WebAppRequestHandler :
+internal class WebAppRequestHandler :
     GetInputStreamRequestHandler {
 
-    var context : Context
+    var context: Context
 
-    constructor( context: Context) : super() {
+    constructor(context: Context) : super() {
         this.context = context
     }
 

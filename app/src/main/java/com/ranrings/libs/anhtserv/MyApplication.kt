@@ -1,15 +1,11 @@
 package com.ranrings.libs.anhtserv
 
-import android.app.ActivityManager
 import android.app.Application
-import android.content.Context
 import com.ranrings.libs.androidapptorest.AndroidRestServer
-
 import com.ranrings.libs.androidapptorest.Base.GetRequestHandler
 import com.ranrings.libs.androidapptorest.Base.PostRequestHandler
-import com.ranrings.libs.androidapptorest.Base.RequestHandler
-import org.json.JSONObject
-
+import com.ranrings.libs.androidapptorest.ReactWebApp
+import com.ranrings.libs.androidapptorest.WebApp
 
 
 class MyApplication : Application() {
@@ -38,20 +34,30 @@ class MyApplication : Application() {
                     return "getpackagename"
                 }
 
-            }).
-                addRequestHandler(object : PostRequestHandler<Person,Any> (Person::class){
-                    override fun getMethodName(): String {
-                        return "personsummary"
-                    }
+            }).addRequestHandler(object : PostRequestHandler<Person, Any>(Person::class) {
+                override fun getMethodName(): String {
+                    return "personsummary"
+                }
 
-                    override fun onRequest(requestBody: Person): Any {
-                        return "${requestBody.name} is ${requestBody.age} years of age and lives in ${requestBody.city}."
-                    }
+                override fun onRequest(requestBody: Person): Any {
+                    return "${requestBody.name} is ${requestBody.age} years of age and lives in ${requestBody.city}."
+                }
 
-                }).
-                startWebApp(true).build()
+            }).startWebApp(true).build()
 
         androidRestServer.start()
+    }
 
+    /**
+     * Creating a webapp
+     */
+    fun createWebApp(): WebApp {
+        val webApp = ReactWebApp(
+            this,
+            assets.open("build.zip"),
+            "activitytracker"
+        )
+        webApp.setUp()
+        return webApp
     }
 }

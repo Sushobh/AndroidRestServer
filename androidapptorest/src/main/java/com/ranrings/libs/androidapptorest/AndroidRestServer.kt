@@ -3,7 +3,6 @@ package com.ranrings.libs.androidapptorest
 import android.app.Application
 import com.ranrings.libs.androidapptorest.Base.RequestHandler
 import fi.iki.elonen.NanoHTTPD
-import java.lang.Exception
 
 
 class AndroidRestServer {
@@ -42,20 +41,26 @@ class AndroidRestServer {
 
         private var androidRestServer: AndroidRestServer;
         private var requestHandlers = arrayListOf<RequestHandler<*, *>>()
-        private var application : Application? = null
+        private var webApps = arrayListOf<WebApp>()
+        private var application: Application? = null
         private var shouldStartWebApp = false
 
-        constructor(){
-            androidRestServer =  AndroidRestServer()
+        constructor() {
+            androidRestServer = AndroidRestServer()
         }
 
 
-        fun addRequestHandler(requetHandler : RequestHandler<*, *>) : Builder{
+        fun addRequestHandler(requetHandler: RequestHandler<*, *>): Builder {
             requestHandlers.add(requetHandler)
             return this
         }
 
-        fun setPort(portNumber : Int)  : Builder {
+        fun addWebApp(webApp: WebApp): Builder {
+            webApps.add(webApp)
+            return this
+        }
+
+        fun setPort(portNumber: Int): Builder {
             androidRestServer.port = portNumber
             return this
         }
@@ -74,8 +79,12 @@ class AndroidRestServer {
 
         fun build() : AndroidRestServer {
               application?.let {
-                  if(shouldStartWebApp){
-                     WebAppExtractor(it,WEB_APP_FOLDER_NAME).extractFromAssets(WEB_APP_ZIP_NAME)
+                  if (shouldStartWebApp) {
+                      WebAppExtractor(it, WEB_APP_FOLDER_NAME).extractFromAssets(
+                          it.assets.open(
+                              WEB_APP_ZIP_NAME
+                          )
+                      )
                   }
                   androidRestServer.application = it
                   androidRestServer.requestCaller = RequestCaller(it)
@@ -83,6 +92,9 @@ class AndroidRestServer {
                   requestHandlers.forEach({
                       androidRestServer.requestCaller.addRequestHandler(it)
                   })
+                  webApps.forEach {
+                      androidRestServer.requestCaller.addWebApp(it)
+                  }
                   return androidRestServer;
              }
              throw Exception("Please set application in the builder")
