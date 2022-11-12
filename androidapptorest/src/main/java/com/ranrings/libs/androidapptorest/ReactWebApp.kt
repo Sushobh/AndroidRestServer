@@ -9,12 +9,18 @@ import java.net.URLConnection
 
 const val REACTWEBAPP_FOLDER_NAME = "asjdaskjodg08qw4eq2873e4"
 
-class ReactWebApp(context: Context, zipFileStream: InputStream, val rootUrlName: String) :
+open class ReactWebApp(
+    context: Context,
+    zipFileStream: InputStream,
+    val rootUrlName: String,
+    val webAppFolderName: String
+    = REACTWEBAPP_FOLDER_NAME
+) :
     WebApp(context, zipFileStream) {
 
 
     override fun getWebAppFoldeName(): String {
-        return REACTWEBAPP_FOLDER_NAME
+        return webAppFolderName
     }
 
     override fun onGetRequest(uri: String): InputStream {
@@ -49,11 +55,6 @@ class ReactWebApp(context: Context, zipFileStream: InputStream, val rootUrlName:
     }
 
     override fun getMimeType(requestUri: String): String {
-//        "js" -> "application/javascript"
-//        "css" -> "application/css"
-//        "json" -> "application/json"
-//        "html" -> "text/html"
-//        else -> "text/plain"
         val mimeType =
             URLConnection.guessContentTypeFromName(File(getFilePath(requestUri)).getName())
 

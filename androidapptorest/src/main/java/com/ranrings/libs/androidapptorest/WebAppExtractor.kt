@@ -23,8 +23,11 @@ class WebAppExtractor{
 
     constructor(context: Context,webAppFolderNameInFilesDir : String){
         this.context = context
-        folderInInternalStorage = context.filesDir.path+"/${webAppFolderNameInFilesDir}"
+        folderInInternalStorage = context.filesDir.path + "/${webAppFolderNameInFilesDir}"
         val file = File(folderInInternalStorage)
+        if (file.exists()) {
+            file.delete()
+        }
         file.mkdirs()
     }
 

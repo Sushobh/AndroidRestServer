@@ -58,7 +58,7 @@ internal open class RequestCaller(var application: Application) {
     fun onRequestReceived(session: NanoHTTPD.IHTTPSession): NanoHTTPD.Response {
 
         val getInputStreamHandler: RequestHandler<*, *>? = requestHandlers.find {
-            session.uri.substring(1, session.uri.length).startsWith(it.getMethodName())
+            isCapableOfHandlingUri(it, session.uri)
                     && it is GetInputStreamRequestHandler
         }
         getInputStreamHandler?.let {
@@ -69,11 +69,7 @@ internal open class RequestCaller(var application: Application) {
         }
 
         val requestHandler: RequestHandler<*, *>? = requestHandlers.find {
-
-            it.getMethodName().equals(parseUriToGetMethodName(session.uri))
-                    ||
-                    (session.uri.substring(1, session.uri.length).startsWith(it.getMethodName())
-                            && it is GetRequestHandler)
+            isCapableOfHandlingUri(it, session.uri)
         }
         requestHandler?.let {
             if (it.getMethodType() == RequestHandler.ASMethodType.GET && (it is GetRequestHandler)) {
@@ -81,7 +77,6 @@ internal open class RequestCaller(var application: Application) {
             } else {
                 return handlePostRequest(requestHandler as RequestHandler<Any, Any>, session)
             }
-
         }
 
         return newFixedLengthResponse(
@@ -262,9 +257,17 @@ internal open class RequestCaller(var application: Application) {
         if (webApps.find { it.getWebAppFoldeName().equals(webApp.getWebAppFoldeName()) } != null) {
             throw WrongWebAppConfigException("WebApp root path name or foler path already is being used")
         }
+        webApp.setUp()
         addRequestHandler(webApp)
         webApps.add(webApp)
     }
 
+    fun isCapableOfHandlingUri(requestHandler: RequestHandler<*, *>, uri: String): Boolean {
+        return try {
+            uri.split("/").get(1).lowercase().equals(requestHandler.getMethodName().lowercase())
+        } catch (e: Exception) {
+            false
+        }
+    }
 
 }

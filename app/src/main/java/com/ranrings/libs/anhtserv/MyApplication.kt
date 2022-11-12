@@ -5,7 +5,7 @@ import com.ranrings.libs.androidapptorest.AndroidRestServer
 import com.ranrings.libs.androidapptorest.Base.GetRequestHandler
 import com.ranrings.libs.androidapptorest.Base.PostRequestHandler
 import com.ranrings.libs.androidapptorest.ReactWebApp
-import com.ranrings.libs.androidapptorest.WebApp
+import java.util.*
 
 
 class MyApplication : Application() {
@@ -24,6 +24,29 @@ class MyApplication : Application() {
         val androidRestServer = AndroidRestServer.Builder()
             .setApplication(this)
             .setPort(port)
+            .addWebApp(
+                ReactWebApp(
+                    this,
+                    assets.open("build.zip"),
+                    "activitytracker",
+                    UUID.randomUUID().toString()
+                )
+            )
+            .addWebApp(
+                ReactWebApp(
+                    this,
+                    assets.open("build.zip"),
+                    "activitytrackerTwo",
+                    UUID.randomUUID().toString()
+                )
+            ).addWebApp(
+                ReactWebApp(
+                    this,
+                    assets.open("build.zip"),
+                    "activitytrackerThree",
+                    UUID.randomUUID().toString()
+                )
+            )
             .addRequestHandler(object : GetRequestHandler<Any>(){
 
                 override fun onGetRequest(uri: String): Any {
@@ -48,16 +71,5 @@ class MyApplication : Application() {
         androidRestServer.start()
     }
 
-    /**
-     * Creating a webapp
-     */
-    fun createWebApp(): WebApp {
-        val webApp = ReactWebApp(
-            this,
-            assets.open("build.zip"),
-            "activitytracker"
-        )
-        webApp.setUp()
-        return webApp
-    }
+
 }
