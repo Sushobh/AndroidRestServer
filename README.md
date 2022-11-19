@@ -1,4 +1,4 @@
-# AndroidRestServer [![](https://jitpack.io/v/Sushobh/AndroidRestServer.svg)](https://jitpack.io/#Sushobh/AndroidRestServer)
+# AndroidRestServer 
 
 A web and REST interface to your Android application. Allows you to access Application specific state/data via REST api or a web interface.
 
@@ -116,7 +116,7 @@ A web and REST interface to your Android application. Allows you to access Appli
 # What next? 
   Here is a list of things that i want to do next.
 - [x] Create the library and publish it.  
-- [ ] Add support for creating request handlers which will serve files.
+- [x] Add support for creating request handlers which will serve files.
 - [ ] Add more tests and allow support for Map request body in post requests.
 - [ ] Find out a way to run the adb port forward command programatically.
    
