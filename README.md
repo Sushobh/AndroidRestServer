@@ -24,20 +24,9 @@ A web and REST interface to your Android application. Allows you to access Appli
 
 
 ## How to get it?
-
-In your project level gradle file, add this
-
-```kotlin
-allprojects {
-   repositories {
-	  maven { url 'https://jitpack.io' }
-	}
-   }
-```
-And then add the dependency in your app level gradle file
 ```java
    dependencies {
-		  implementation 'com.github.Sushobh:AndroidRestServer:Release2'
+		   implementation 'com.sushobh:androidrestserver:1.0.0'
     }
 ```
   
